@@ -24,6 +24,8 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbea
     mv metricbeat-${METRICBEAT_VERSION}-linux-x86_64/ /metricbeat && \
     mv /metricbeat/metricbeat /bin/metricbeat && \
     chmod +x /bin/metricbeat && \
-    mkdir -p /metricbeat/config /metricbeat/data
+    mkdir -p /metricbeat/config /metricbeat/data && \
+    chown -R 0:0 /metricbeat && \
+    chmod -R g+rwx /metricbeat
 
 WORKDIR /metricbeat
