@@ -12,7 +12,12 @@ if [ $ELASTICSEARCH_URL ]; then
       echo "waiting for Elasticsearch to be up ($counter/30)"
     done
 
-    curl -XPUT "http://$ELASTIC_PATH/_template/metricbeat" -d@/metricbeat/metricbeat.template-es2x.json
+    # curl -XPUT "http://$ELASTIC_PATH/_template/metricbeat" -d@/metricbeat/metricbeat.template-es2x.json
+    echo "Inserting metricbeat templates"
+    curl -XPUT 'http://$ELASTIC_PATH/_template/metricbeat' -d@/etc/metricbeat/metricbeat.template.json
 fi
+
+echo "Importing metricbeat dashboards"
+./scripts/import_dashboards -es http://$ELASTIC_PATH
 
 metricbeat -e -v -system.hostfs=/hostfs -c /metricbeat/metricbeat.yml
