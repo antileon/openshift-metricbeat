@@ -32,6 +32,6 @@ WORKDIR /metricbeat
 
 ADD container-files /
 
-ENV ELASTICSEARCH_URL=elasticsearch
+ENV ELASTICSEARCH_URL=elasticsearch:9200
 
 CMD /start.sh
