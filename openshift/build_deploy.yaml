@@ -1,0 +1,107 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: openshift-metricbeat
+    name: centos
+  spec:
+    tags:
+    - annotations:
+        openshift.io/imported-from: centos:latest
+      from:
+        kind: DockerImage
+        name: centos:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: openshift-metricbeat
+    name: openshift-metricbeat
+  spec: {}
+  status:
+    dockerImageRepository: ""
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: openshift-metricbeat
+    name: openshift-metricbeat
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: openshift-metricbeat:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        uri: https://github.com/antileon/openshift-metricbeat.git
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: centos:latest
+      type: Docker
+    triggers:
+    - github:
+        secret: uobs_NS98-K2YRYkDeGs
+      type: GitHub
+    - generic:
+        secret: yh5LKbl1cQYE93a0FJkk
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: openshift-metricbeat
+    name: openshift-metricbeat
+  spec:
+    replicas: 1
+    selector:
+      app: openshift-metricbeat
+      deploymentconfig: openshift-metricbeat
+    strategy:
+      resources: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/container.openshift-metricbeat.image.entrypoint: '["/bin/bash"]'
+        creationTimestamp: null
+        labels:
+          app: openshift-metricbeat
+          deploymentconfig: openshift-metricbeat
+      spec:
+        containers:
+        - image: openshift-metricbeat:latest
+          name: openshift-metricbeat
+          resources: {}
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - openshift-metricbeat
+        from:
+          kind: ImageStreamTag
+          name: openshift-metricbeat:latest
+      type: ImageChange
+  status: {}
