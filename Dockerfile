@@ -12,6 +12,7 @@ RUN curl -LO https://storage.googleapis.com/golang/$GOVER.tar.gz && \
     rm -f $GOVER.tar.gz && \
     mv go /usr/local && \
     cd /usr/local && \
-    ln -s ./go/bin/go go
+    mv go goroot && \
+    ln -s ./goroot/bin/go go
 
-ENV GOROOT=/usr/local/go
+ENV GOROOT=/usr/local/goroot
