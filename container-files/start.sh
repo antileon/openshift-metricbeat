@@ -2,7 +2,7 @@
 
 if [ $ELASTICSEARCH_URL ]; then
     # wait for elasticsearch to start up
-    ELASTIC_PATH=${ELASTICSEARCH_URL:-elasticsearch:9200}
+    export ELASTIC_PATH=${ELASTICSEARCH_URL:-elasticsearch:9200}
     echo "Configure ${ELASTIC_PATH}"
 
     counter=0
