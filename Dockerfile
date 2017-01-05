@@ -29,3 +29,9 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbea
     chmod -R g+rwx /metricbeat
 
 WORKDIR /metricbeat
+
+ADD container-files /
+
+ENV ELASTICSEARCH_URL=elasticsearch
+
+CMD /start.sh
