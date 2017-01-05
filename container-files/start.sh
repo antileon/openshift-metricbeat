@@ -15,4 +15,4 @@ if [ $ELASTICSEARCH_URL ]; then
     curl -XPUT "http://$ELASTIC_PATH/_template/metricbeat" -d@/metricbeat/metricbeat.template-es2x.json
 fi
 
-metricbeat -e -v -c /metricbeat/metricbeat.yml
+metricbeat -e -v -system.hostfs=/hostfs -c /metricbeat/metricbeat.yml
